@@ -1,0 +1,5 @@
+numpy
+scipy
+scikit-learn
+leven
+python-slugify
