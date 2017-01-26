@@ -1,5 +1,8 @@
+jupyter
+requests
+pandas
 numpy
 scipy
 scikit-learn
-leven
 python-slugify
+leven
