@@ -2,20 +2,39 @@
 
 ## Prérequis
 
-- Python 3 ou PyPy 3
-- Graphviz si vous souhaitez afficher un test adaptatif
+- brew install python3
+
+Optionnel :
+
+- brew install pypy3  # Accélérer la génération des tests adaptatifs
+- brew install graphviz  # Si vous souhaitez afficher un test adaptatif
+
+## Installation
+
+    python3 -m venv venv
+    . venv/bin/activate
+    pip install -r requirements.txt
 
 ## Génération
 
 - Télécharger les épreuves au format CSV depuis la vue JJV dans AirTable, les mettre dans `data`.
-- `python3 epreuves.py` crée `epreuves.json` et `prerequis.json`.
-- `pypy3 dummy.py 20 {{ test_id }}` crée un test adaptatif d'ID `{{ test_id }}` de profondeur au plus 20 et l'enregistre au format JSON (`scenarios.json`, 2 min de cuisson environ sur un MBA i5 1.3 GHz mid-2013).
-- `python3 json2csv.py` crée l'équivalent `scenarios.csv`.
-- `python3 airtable.py {{ test_id }}` permet de mettre à jour le test dans Airtable avec les bonnes épreuves.
+- `python epreuves.py` crée `epreuves.json` et `prerequis.json`.
+- `pypy3 dummy.py <nb_questions> <test_id>` crée un test adaptatif d'ID `<test_id>` de profondeur au plus `<nb_questions>` et l'enregistre au format JSON (`scenarios.json`, 2 min de cuisson environ sur un MBA i5 1.3 GHz mid-2013).
+- `python json2csv.py` crée l'équivalent `scenarios.csv`.
+- `python airtable.py <test_id>` permet de mettre à jour le test dans Airtable avec les bonnes épreuves.
 
 ## Simulation
 
+(optionnel : `pip install Flask`)
+
 `python3 cat.py 20` permet de simuler le test adaptatif avec une interface en Flask.
+
+## Installation dans une review app
+
+    mv data/scenarios.csv data/<scenarios_file>
+    scp data/<scenarios_file> <pix@pix>:placement_tests
+    ssh <pix@pix>
+    pix placement_tests:load <app_name> <scenarios_file>
 
 ## Mise en production
 
