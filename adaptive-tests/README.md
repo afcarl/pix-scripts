@@ -3,6 +3,7 @@
 ## Prérequis
 
 - Python 3 ou PyPy 3
+- Graphviz si vous souhaitez afficher un test adaptatif
 
 ## Génération
 
@@ -32,4 +33,3 @@ Pour ensuite l'importer sur le serveur PIX :
     dokku postgres:connect pg-staging < scenarios.dump
 
 (Attention, `pg-staging` (avec un dash) est le nom de l'application Dokku, tandis que `pg_staging` (avec un underscore) est le nom de la base de données.)
-2
