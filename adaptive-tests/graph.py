@@ -6,9 +6,9 @@ def generate(height):
     random.shuffle(cat)
     return cat
 
-def generate_display(cat):
+def generate_display(cat, short_course_id):
     n = len(cat)
-    with open('data/cat.dot', 'w') as f:
+    with open('data/cat%s.dot' % short_course_id, 'w') as f:
         f.write('digraph G {\n')
         f.write('rankdir=UD\n')
         for i in range(n):
@@ -16,6 +16,6 @@ def generate_display(cat):
                 f.write('"{}" -> "{}";\n'.format(cat[i], cat[2 * i + 1]))
                 f.write('"{}" -> "{}";\n'.format(cat[i], cat[2 * i + 2]))
         f.write('}')
-    os.system('dot -Tpng data/cat.dot > data/cat.png')
+    os.system('dot -Tpng data/cat%s.dot > data/cat%s.png' % (short_course_id, short_course_id))
 
 # generate_display(generate(3))

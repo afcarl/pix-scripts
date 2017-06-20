@@ -2,12 +2,12 @@
 
 ## Prérequis
 
-- brew install python3
+    brew install python3
 
 Optionnel :
 
-- brew install pypy3  # Accélérer la génération des tests adaptatifs
-- brew install graphviz  # Si vous souhaitez afficher un test adaptatif
+    brew install pypy3  # Accélérer la génération des tests adaptatifs
+    brew install graphviz  # Pour afficher un test adaptatif (peu profond) sous forme de graphe
 
 ## Installation
 
@@ -18,10 +18,10 @@ Optionnel :
 ## Génération
 
 - Télécharger les épreuves au format CSV depuis la vue JJV dans AirTable, les mettre dans `data`.
-- `python epreuves.py` crée `epreuves.json` et `prerequis.json`.
-- `pypy3 dummy.py <nb_questions> <test_id>` crée un test adaptatif d'ID `<test_id>` de profondeur au plus `<nb_questions>` et l'enregistre au format JSON (`scenarios.json`, 2 min de cuisson environ sur un MBA i5 1.3 GHz mid-2013).
-- `python json2csv.py` crée l'équivalent `scenarios.csv`.
-- `python airtable.py <test_id>` permet de mettre à jour le test dans Airtable avec les bonnes épreuves.
+- `python epreuves.py` crée `epreuves<id>.json` et `prerequis<id>.json`.
+- `pypy3 dummy.py <nb_questions>` crée un test adaptatif de profondeur au plus `<nb_questions>` et l'enregistre au format JSON (`scenarios<id>.json`, 2 min de cuisson environ sur un MBA i5 1.3 GHz mid-2013).
+- `python json2csv.py` crée l'équivalent `scenarios<id>.csv`.
+- `python airtable.py` permet de mettre à jour le test dans Airtable avec les bonnes épreuves.
 
 ## Simulation
 

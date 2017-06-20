@@ -1,9 +1,12 @@
 import csv
 from collections import Counter
 import json
+import sys
+from conf import SHORT_COURSE_ID
+
 
 # Airtable to JSON
-with open('data/Epreuves-JJV.csv') as f:
+with open('data/Epreuves-JJV%s.csv' % SHORT_COURSE_ID) as f:
     csvreader = csv.reader(f)
     fields = next(f).split(',')
     data = []
@@ -26,7 +29,7 @@ with open('data/Epreuves-JJV.csv') as f:
         print(k, c[k])
 
 # Save it
-with open('data/epreuves.json', 'w') as f:
+with open('data/epreuves%s.json' % SHORT_COURSE_ID, 'w') as f:
     json.dump(addons, f, indent=True)
 
 # Infer the graph of prerequisites
@@ -37,5 +40,5 @@ edges = []
 for i in range(n - 1):
     if nodes[i][:-1] == nodes[i + 1][:-1]:  # Hack
         edges.append((i, i + 1))
-with open('data/prerequis.json', 'w') as f:
+with open('data/prerequis%s.json' % SHORT_COURSE_ID, 'w') as f:
     f.write(json.dumps({'nodes': nodes, 'edges': edges, 'inv': inv}));

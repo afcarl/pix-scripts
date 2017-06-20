@@ -3,14 +3,14 @@ from collections import Counter, namedtuple
 from itertools import product
 from logreg import proba, compute_level_est
 from graph import generate_display
+from conf import ADAPTIVE_COURSE_IDS, SHORT_COURSE_ID
 import sys
 
 
 MAX_DEPTH = int(sys.argv[1])
-ADAPTIVE_COURSE_ID = sys.argv[2]
 
 
-with open('data/prerequis.json') as f:
+with open('data/prerequis%s.json' % SHORT_COURSE_ID) as f:
     data = json.load(f)
     nodes = data['nodes']
     edges = data['edges']
@@ -20,7 +20,7 @@ with open('data/prerequis.json') as f:
 
 id_of = {}
 statement_of = {}
-with open('data/epreuves.json') as f:
+with open('data/epreuves%s.json' % SHORT_COURSE_ID) as f:
     problems = json.load(f)
     for problem in problems:
         id_of[problem['tags']] = problem['id']
@@ -31,7 +31,7 @@ cat = [None] * ((1 << MAX_DEPTH) - 1)
 next_question = {}
 yes_of = {'': []}
 no_of = {'': []}
-level_est_of = {'': 3}
+level_est_of = {'': 1.5}
 history_of = {'': []}
 
 def propagate_acquix(i, outcome): # already, 
@@ -107,11 +107,17 @@ def get_level_est(path): # , cat
     return compute_level_est(history_of[path])
 
 
-Stage = namedtuple('Stage', 'path acquired not_acquired level_est history')
+Scenario = namedtuple('Scenario', 'path pattern history acquired not_acquired level_estimate')
+
+
+def build_tree():
+    todo = [Scenario(path='', pattern='', history=[], acquired=[], not_acquired=[], level_estimate=2)]
+    pass
 
 
 command = {'': '', '1': 'ok', '0': 'ko'}
 if __name__ == '__main__':
+    build_tree()
     display_cat = [None] * ((1 << MAX_DEPTH) - 1)
     nb_null = 0
     paths = ['']
@@ -136,6 +142,8 @@ if __name__ == '__main__':
         if c == 0:
             print('Starts with:', id_of[nodes[best_i]])
             print(statement_of[nodes[best_i]])
+            with open('data/starter%s.txt' % SHORT_COURSE_ID, 'w') as f:
+                f.write(id_of[nodes[best_i]])
         # print(c, best_i)
         yes_of[path + '0'] = yes_of[path]
         no_of[path + '0'] = no_of[path] + if_no
@@ -153,15 +161,15 @@ if __name__ == '__main__':
     print(len(yes_of), (1 << MAX_DEPTH + 1) - 1)
     print(nb_null, 'avoided null-nodes')
     # print(cat)
-    '''if MAX_DEPTH <= 5:
-        generate_display(display_cat)'''
+    if MAX_DEPTH <= 5:
+        generate_display(display_cat, SHORT_COURSE_ID)
     # print(no)
 
 records = []
 for path in next_question:
     if path:
         # print(path, nodes[next_question[path]])
-        records.append([ADAPTIVE_COURSE_ID, path, id_of[nodes[next_question[path]]]])
+        records.append([ADAPTIVE_COURSE_IDS[SHORT_COURSE_ID], path, id_of[nodes[next_question[path]]]])
 
-with open('data/scenarios.json', 'w') as f:
+with open('data/scenarios%s.json' % SHORT_COURSE_ID, 'w') as f:
     f.write(json.dumps({'scenarios': records}))
